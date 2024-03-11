@@ -1,8 +1,7 @@
 import { Router } from "express";
 import User from "../models/user";
 import bcryptjs from "bcryptjs";
-import Joi from "joi";
-import passwordComplexity from "joi-password-complexity";
+import {signUpBodyValidation} from "../utils/validationSchema"
 const router = Router();
 
 router.post("/signup", async (req, res) => {
@@ -31,13 +30,5 @@ router.post("/signup", async (req, res) => {
     res.status(500).json({ error: true, message: "Internal Server Error" });
   }
 });
-const signUpBodyValidation = (body) => {
-  const schema = Joi.object({
-    username: Joi.string().required().label("User Name"),
-    email: Joi.string().email().required().label("Email"),
-    password: passwordComplexity().required().label("Password"),
-  });
-  return schema.validate(body);
-};
 
 export default router;
