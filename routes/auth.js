@@ -5,9 +5,11 @@ import {
   signUpBodyValidation,
   logInBodyValidation,
 } from "../utils/validationSchema";
+import generateTokens from "../utils/generateToken";
+
 const router = Router();
 
-router.post("/signup", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { error } = logInBodyValidation(req.body);
     if (error) {
@@ -31,13 +33,19 @@ router.post("/signup", async (req, res) => {
       req.body.password,
       user.password
     );
-    
+    const { accessToken, refreshToken } = await generateTokens(user);
+    res.status(200).json({
+      error: false,
+      accessToken,
+      refreshToken,
+      message: "logged in successfully!",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: true, message: "Internal Server Error" });
   }
 });
-router.post("/login", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const { error } = signUpBodyValidation(req.body);
     if (error) {
