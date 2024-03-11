@@ -10,4 +10,12 @@ const signUpBodyValidation = (body) => {
   return schema.validate(body);
 };
 
-export default { signUpBodyValidation };
+const logInBodyValidation = (body) => {
+  const schema = Joi.object({
+    email: Joi.string().email().required().label("Email"),
+    password: Joi.string().email().required().label("Password"),
+  });
+  return schema.validate(body);
+};
+
+export default { signUpBodyValidation, logInBodyValidation };
