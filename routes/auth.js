@@ -1,11 +1,11 @@
 import { Router } from "express";
-import User from "../models/user";
+import User from "../models/user.js";
 import bcryptjs from "bcryptjs";
 import {
   signUpBodyValidation,
   logInBodyValidation,
-} from "../utils/validationSchema";
-import generateTokens from "../utils/generateToken";
+} from "../utils/validationSchema.js";
+import generateTokens from "../utils/generateToken.js";
 
 const router = Router();
 
@@ -18,21 +18,21 @@ router.post("/login", async (req, res) => {
         .json({ error: true, message: error.details[0].message });
     }
     const user = await User.findOne({ email: req.body.email });
-    if (user) {
+    console.log(user.email);
+    if (!user) {
       return res
         .status(400)
         .json({ error: true, message: "Invalid email or password" });
     }
+    const verifiedPassword = await bcryptjs.compare(
+      req.body.password,
+      user.password
+    );
     if (!verifiedPassword) {
       return res
         .status(400)
         .json({ error: true, message: error.details[0].message });
     }
-
-    const verifiedPassword = await bcryptjs.compare(
-      req.body.password,
-      user.password
-    );
     const { accessToken, refreshToken } = await generateTokens(user);
     res.status(200).json({
       error: false,
