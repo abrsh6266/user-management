@@ -5,6 +5,9 @@ import {
   createPostValidation,
   fetchPostValidation,
 } from "../utils/validationSchema.js";
+
+const router = Router();
+
 router.post("/create", isLoggedIn, async (req, res) => {
     try {
       const { error } = createPostValidation.validate(req.body);
@@ -25,4 +28,4 @@ router.post("/create", isLoggedIn, async (req, res) => {
       res.status(500).json({ error: true, message: "Internal Server Error" });
     }
   });
-const router = Router();
+  export default router;
