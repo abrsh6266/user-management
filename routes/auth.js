@@ -72,5 +72,17 @@ router.post("/signup", async (req, res) => {
     res.status(500).json({ error: true, message: "Internal Server Error" });
   }
 });
+router.get("/user/get", isLoggedIn, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ error: true, message: "User not found" });
+    }
+    res.status(200).json({ error: false, user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: true, message: "Internal Server Error" });
+  }
+});
 
 export default router;
