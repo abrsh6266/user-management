@@ -84,5 +84,18 @@ router.get("/user/get", isLoggedIn, async (req, res) => {
     res.status(500).json({ error: true, message: "Internal Server Error" });
   }
 });
-
+router.put("/user/update", isLoggedIn, async (req, res) => {
+  try {
+    const { username, name, email } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { username, name, email },
+      { new: true }
+    );
+    res.status(200).json({ error: false, user: updatedUser });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: true, message: "Internal Server Error" });
+  }
+});
 export default router;
