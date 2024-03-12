@@ -1,16 +1,15 @@
 import mongoose from "mongoose";
 
-const dbConnection = () => {
-  const connectionParams = { useNewUrlParser: true };
-  mongoose.connect(process.env.DB, connectionParams);
-  mongoose.connection.on("connected", () => {
+const dbConnection = async () => {
+  try {
+    await mongoose.connect(process.env.DB);
     console.log("Connected to database successfully!");
-  });
-  mongoose.connection.on("error", (err) => {
-    console.log("error while connecting to database: ", err);
-  });
+  } catch (error) {
+    console.error("Error while connecting to database:", error);
+  }
+
   mongoose.connection.on("disconnected", () => {
-    console.log("Mongodb connection disconnected!");
+    console.log("MongoDB connection disconnected!");
   });
 };
 
