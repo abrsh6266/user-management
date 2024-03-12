@@ -6,6 +6,7 @@ import {
   logInBodyValidation,
 } from "../utils/validationSchema.js";
 import generateTokens from "../utils/generateToken.js";
+import isLoggedIn from "../middleware/isLoggedIn.js";
 
 const router = Router();
 
@@ -71,4 +72,5 @@ router.post("/signup", async (req, res) => {
     res.status(500).json({ error: true, message: "Internal Server Error" });
   }
 });
+
 export default router;
