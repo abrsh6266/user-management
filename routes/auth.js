@@ -19,7 +19,6 @@ router.post("/login", async (req, res) => {
         .json({ error: true, message: error.details[0].message });
     }
     const user = await User.findOne({ email: req.body.email });
-    console.log(user.email);
     if (!user) {
       return res
         .status(400)
@@ -34,11 +33,10 @@ router.post("/login", async (req, res) => {
         .status(400)
         .json({ error: true, message: error.details[0].message });
     }
-    const { accessToken, refreshToken } = await generateTokens(user);
+    const { accessToken } = await generateTokens(user);
     res.status(200).json({
       error: false,
       accessToken,
-      refreshToken,
       message: "logged in successfully!",
     });
   } catch (error) {
