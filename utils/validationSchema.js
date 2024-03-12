@@ -17,5 +17,19 @@ const logInBodyValidation = (body) => {
     password: Joi.string().required().label("Password"),
   });
   return schema.validate(body);
-};  
-export { signUpBodyValidation, logInBodyValidation };
+};
+
+const createPostValidation = Joi.object({
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+});
+
+const fetchPostValidation = Joi.object({
+  postId: Joi.string().required(),
+});
+export {
+  signUpBodyValidation,
+  logInBodyValidation,
+  createPostValidation,
+  fetchPostValidation,
+};
